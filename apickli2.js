@@ -37,24 +37,19 @@ const merge = def => o => R.mergeDeepLeft(o, def)
 apickli.TestContext = overrides =>
     R.mergeDeepLeft(defaultContext, overrides)
 
-apickli.TestScenario = {
-    init: overrides =>
-        R.compose(
-            Reader.of,
-            merge(defaultRequest)
-        )(overrides),
-}
+apickli.TestScenario = overrides =>
+    R.compose(
+        Reader.of,
+        merge(defaultRequest)
+    )(overrides)
 
 apickli.setHeader = (name, value) => (scenario) =>
     R.assocPath(['headers', name], value, scenario)
 
 apickli.setQueryParameter = (name, value) => (scenario) => {
-    const a = withContext(context =>
+    return withContext(context =>
         R.assocPath(['queryParameters', name], context.variableChar, scenario)
     )
-
-    console.log(a)
-    return a
 }
 
 module.exports = apickli

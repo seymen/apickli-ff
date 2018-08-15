@@ -37,7 +37,7 @@ const r = {
 
 const context = TestContext(test)
 
-const scenario = TestScenario.init(r)
+const scenario = TestScenario(r)
     .map(setHeader('map', 'map'))
     .chain(setQueryParameter('context.variableChar', '-'))
     .map(print)
