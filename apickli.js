@@ -1,10 +1,10 @@
-//TODO: implement request execution
 //TODO: implement response assertion example
 
 const R = require('ramda')
 const util = require('util')
-
 const Reader = require('fantasy-readers')
+const http = require('request-promise-native')
+
 const withContext = f => Reader.ask.map(f)
 
 const apickli = {
@@ -26,11 +26,16 @@ let defaultContext = {
 }
 
 let defaultRequest = {
+    time: true, // in order to receive response.timingPhases object
+    simple: false, // prevent 4xx and 5xx to trigger promise.catch
+    resolveWithFullResponse: true,
+    followRedirect: false,
     method: 'GET',
+    uri: '/',
     headers: {
         Cache: 'no-cache'
     },
-    qs: {}
+    qs: {},
 }
 
 const merge = def => o => R.mergeDeepLeft(o, def)
@@ -41,7 +46,11 @@ const Request =
         return {
             step: f => Request.of(reader.map(f)),
             stepWithContext: f => Request.of(reader.chain(f)),
-            execute: c => reader.run(c)
+            execute: c =>
+                R.compose(
+                    http,
+                    reader.run
+                )(c)
         }
     }
 })
@@ -70,7 +79,10 @@ apickli.setQueryParameter = (name, value) => (request) => {
     )
 }
 
-apickli.setMethod = (method) => (request) =>
+apickli.setMethod = method => request =>
     R.assocPath(['method'], method, request)
+
+apickli.setUri = uri => request =>
+    R.assocPath(['uri'], uri, request)
 
 module.exports = apickli
