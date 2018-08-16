@@ -1,6 +1,24 @@
+//TODO: implement request execution
+//TODO: implement response assertion example
+
 const R = require('ramda')
 
-let defaultTest = {
+const Reader = require('fantasy-readers')
+const withContext = f => Reader.ask.map(f)
+
+const apickli = {
+    expose: function(env) {
+        var f;
+        for (f in apickli) {
+            if (f !== 'expose' && apickli.hasOwnProperty(f)) {
+                env[f] = apickli[f];
+            }
+        }
+        return apickli;
+    }
+}
+
+let defaultContext = {
     variables: {},
     variableChar: '`',
     fixturesDirectory: '',
@@ -15,43 +33,34 @@ let defaultRequest = {
 
 const merge = def => o => R.mergeDeepLeft(o, def)
 
-const initializeRequester = (test) => {
-    test = R.mergeDeepLeft(test, defaultTest)
-
-    return (req) =>
-        R.compose(
-            Request(test),
-            merge(defaultRequest)
-        )(req)
-}
-
-const Request = test => req =>
+const Scenario =
 ({
-    map: f => Request(test)(f(req, test))
+    of: reader => {
+        return {
+            step: f => Scenario.of(reader.map(f)),
+            stepWithContext: f => Scenario.of(reader.chain(f)),
+            run: c => reader.run(c)
+        }
+    }
 })
 
-const setHeader = (name, value) => (req, test) => {
-    req.headers[name] = value
-    return req
+apickli.TestContext = overrides =>
+    R.mergeDeepLeft(defaultContext, overrides)
+
+apickli.TestScenario = overrides =>
+    R.compose(
+        Scenario.of,
+        Reader.of,
+        merge(defaultRequest)
+    )(overrides)
+
+apickli.setHeader = (name, value) => (scenario) =>
+    R.assocPath(['headers', name], value, scenario)
+
+apickli.setQueryParameter = (name, value) => (scenario) => {
+    return withContext(context =>
+        R.assocPath(['queryParameters', name], context.variableChar, scenario)
+    )
 }
 
-module.exports = {
-    initializeRequester,
-    setHeader
-}
-
-// const Request = (x, scenarioOptions) =>
-// ({
-//     map: f => Request(f(x, R.clone(scenarioOptions)), scenarioOptions)
-// })
-
-// const Request = scenarioOptions =>
-// ({
-//     of: requestOptions => {
-//         const options = Object.assign({}, requestOptions, defaultRequestOptions)
-
-//         return ({
-//             map: f => Request(scenarioOptions).of(f(options, R.clone(scenarioOptions)))
-//         })
-//     }
-// })
+module.exports = apickli
