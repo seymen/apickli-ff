@@ -34,23 +34,23 @@ let defaultRequest = {
 
 const merge = def => o => R.mergeDeepLeft(o, def)
 
-const Scenario =
+const Request =
 ({
     of: reader => {
         return {
-            step: f => Scenario.of(reader.map(f)),
-            stepWithContext: f => Scenario.of(reader.chain(f)),
+            step: f => Request.of(reader.map(f)),
+            stepWithContext: f => Request.of(reader.chain(f)),
             run: c => reader.run(c)
         }
     }
 })
 
-apickli.TestContext = overrides =>
+apickli.ScenarioContext = overrides =>
     R.mergeDeepLeft(defaultContext, overrides)
 
-apickli.TestScenario = overrides =>
+apickli.RequestFactory = overrides =>
     R.compose(
-        Scenario.of,
+        Request.of,
         Reader.of,
         merge(defaultRequest)
     )(overrides)
@@ -60,12 +60,12 @@ apickli.inspect = x => {
     return x
 }
 
-apickli.setHeader = (name, value) => (scenario) =>
-    R.assocPath(['headers', name], value, scenario)
+apickli.setHeader = (name, value) => (request) =>
+    R.assocPath(['headers', name], value, request)
 
-apickli.setQueryParameter = (name, value) => (scenario) => {
+apickli.setQueryParameter = (name, value) => (request) => {
     return withContext(context =>
-        R.assocPath(['queryParameters', name], context.variableChar, scenario)
+        R.assocPath(['queryParameters', name], context.variableChar, request)
     )
 }
 

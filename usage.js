@@ -1,24 +1,24 @@
 require('./apickli').expose(global)
 
-const myContext = {
+const ctx = {
     variables: {
         a: 1
     }
 }
 
-const myScenario = {
+const req = {
     headers: {
         Authorization: 'Bearer abcd'
     }
 }
 
-const context = TestContext(myContext)
+const context = ScenarioContext(ctx)
 
-const scenario = TestScenario(myScenario)
+const request = RequestFactory(req)
     .step(setHeader('map', 'map'))
     .stepWithContext(setQueryParameter('context.variableChar', '-'))
     .step(inspect)
 
 console.log('before')
-scenario.run(context)
+request.run(ctx)
 console.log('after')
