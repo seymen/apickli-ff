@@ -1,4 +1,5 @@
 //TODO: implement response assertion example
+//TODO: variable replacer
 
 const R = require('ramda')
 const util = require('util')
@@ -6,18 +7,7 @@ const Reader = require('fantasy-readers')
 const http = require('request-promise-native')
 
 const withContext = f => Reader.ask.map(f)
-
-const apickli = {
-    expose: function(env) {
-        var f;
-        for (f in apickli) {
-            if (f !== 'expose' && apickli.hasOwnProperty(f)) {
-                env[f] = apickli[f];
-            }
-        }
-        return apickli;
-    }
-}
+const _ = {}
 
 let defaultContext = {
     variables: {},
@@ -55,34 +45,44 @@ const Request =
     }
 })
 
-apickli.ScenarioContext = overrides =>
+_.ScenarioContext = overrides =>
     R.mergeDeepLeft(defaultContext, overrides)
 
-apickli.RequestFactory = overrides =>
+_.RequestFactory = overrides =>
     R.compose(
         Request.of,
         Reader.of,
         merge(defaultRequest)
     )(overrides)
 
-apickli.inspect = x => {
+_.inspect = x => {
     console.log(util.inspect(x, {colors: true, compact: false}))
     return x
 }
 
-apickli.setHeader = (name, value) => (request) =>
+_.setHeader = (name, value) => (request) =>
     R.assocPath(['headers', name], value, request)
 
-apickli.setQueryParameter = (name, value) => (request) => {
+_.setQueryParameter = (name, value) => (request) => {
     return withContext(context =>
         R.assocPath(['qs', name], context.variableChar, request)
     )
 }
 
-apickli.setMethod = method => request =>
+_.setMethod = method => request =>
     R.assocPath(['method'], method, request)
 
-apickli.setUri = uri => request =>
+_.setUri = uri => request =>
     R.assocPath(['uri'], uri, request)
 
-module.exports = apickli
+_.expose = env => {
+    var f
+    for (f in _) {
+        if (f !== 'expose' && _.hasOwnProperty(f)) {
+            env[f] = _[f]
+        }
+    }
+    return _
+}
+
+module.exports = _
