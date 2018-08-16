@@ -40,7 +40,7 @@ const Request =
         return {
             step: f => Request.of(reader.map(f)),
             stepWithContext: f => Request.of(reader.chain(f)),
-            run: c => reader.run(c)
+            execute: c => reader.run(c)
         }
     }
 })

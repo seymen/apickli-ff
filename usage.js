@@ -20,5 +20,5 @@ const request = RequestFactory(req)
     .step(inspect)
 
 console.log('before')
-request.run(ctx)
+request.execute(ctx)
 console.log('after')
