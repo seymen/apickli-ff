@@ -2,6 +2,7 @@
 //TODO: implement response assertion example
 
 const R = require('ramda')
+const util = require('util')
 
 const Reader = require('fantasy-readers')
 const withContext = f => Reader.ask.map(f)
@@ -53,6 +54,11 @@ apickli.TestScenario = overrides =>
         Reader.of,
         merge(defaultRequest)
     )(overrides)
+
+apickli.inspect = x => {
+    console.log(util.inspect(x, {colors: true, compact: false}))
+    return x
+}
 
 apickli.setHeader = (name, value) => (scenario) =>
     R.assocPath(['headers', name], value, scenario)

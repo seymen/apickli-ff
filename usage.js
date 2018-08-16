@@ -1,11 +1,4 @@
-require('./apickli2').expose(global)
-
-const util = require('util')
-
-const print = x => {
-    console.log(util.inspect(x, {colors: true, compact: false}))
-    return x
-}
+require('./apickli').expose(global)
 
 const myContext = {
     variables: {
@@ -24,7 +17,7 @@ const context = TestContext(myContext)
 const scenario = TestScenario(myScenario)
     .step(setHeader('map', 'map'))
     .stepWithContext(setQueryParameter('context.variableChar', '-'))
-    .step(print)
+    .step(inspect)
 
 console.log('before')
 scenario.run(context)
