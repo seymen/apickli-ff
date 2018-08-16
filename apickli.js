@@ -37,9 +37,9 @@ const Request =
             step: f => Request.of(reader.map(f)),
             stepWithContext: f => Request.of(reader.chain(f)),
             execute: c =>
-                R.compose(
-                    http,
-                    reader.run
+                R.pipe(
+                    reader.run,
+                    http
                 )(c)
         }
     }
@@ -49,10 +49,10 @@ _.ScenarioContext = overrides =>
     R.mergeDeepLeft(defaultContext, overrides)
 
 _.RequestFactory = overrides =>
-    R.compose(
-        Request.of,
+    R.pipe(
+        merge(defaultRequest),
         Reader.of,
-        merge(defaultRequest)
+        Request.of
     )(overrides)
 
 _.inspect = x => {
