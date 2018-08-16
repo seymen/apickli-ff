@@ -7,18 +7,20 @@ const ctx = {
 }
 
 const req = {
+    baseUrl: 'https://httpbin.org',
     headers: {
         Authorization: 'Bearer abcd'
     }
 }
 
-const context = ScenarioContext(ctx)
+const scenarioContext = ScenarioContext(ctx)
 
 const request = RequestFactory(req)
     .step(setHeader('map', 'map'))
     .stepWithContext(setQueryParameter('context.variableChar', '-'))
+    .step(setMethod('GET'))
     .step(inspect)
 
 console.log('before')
-request.execute(ctx)
+request.execute(scenarioContext)
 console.log('after')

@@ -26,10 +26,11 @@ let defaultContext = {
 }
 
 let defaultRequest = {
+    method: 'GET',
     headers: {
         Cache: 'no-cache'
     },
-    queryParameters: {}
+    qs: {}
 }
 
 const merge = def => o => R.mergeDeepLeft(o, def)
@@ -65,8 +66,11 @@ apickli.setHeader = (name, value) => (request) =>
 
 apickli.setQueryParameter = (name, value) => (request) => {
     return withContext(context =>
-        R.assocPath(['queryParameters', name], context.variableChar, request)
+        R.assocPath(['qs', name], context.variableChar, request)
     )
 }
+
+apickli.setMethod = (method) => (request) =>
+    R.assocPath(['method'], method, request)
 
 module.exports = apickli
