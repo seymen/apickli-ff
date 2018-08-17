@@ -16,14 +16,14 @@ const req = {
 const scenarioContext = ScenarioContext(ctx)
 
 const request = RequestFactory(req)
-    .step(setHeader('map', 'map'))
-    .stepWithContext(setQueryParameter('context.variableChar', '-'))
+    .step(setHeader('map', '`a`'))
+    .stepWithContext(setQueryParameter('a', '`a`'))
     .step(setMethod('GET'))
     .step(setUri('/status/400'))
-    .step(inspect)
+    .stepWithContext(inspect)
 
 console.log('before')
 request.execute(scenarioContext)
-    .then(response => console.log('success: ', response.timingPhases))
     .catch(err => console.log('fail', err))
+    .then(response => console.log(response.timingPhases))
 console.log('after')

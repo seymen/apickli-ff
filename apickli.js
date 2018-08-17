@@ -11,7 +11,7 @@ const _ = {}
 
 let defaultContext = {
     variables: {},
-    variableChar: '`',
+    templateChar: '`',
     fixturesDirectory: '',
 }
 
@@ -30,20 +30,52 @@ let defaultRequest = {
 
 const merge = def => o => R.mergeDeepLeft(o, def)
 
+const safeGetTemplateValue = (context, templated) => {
+    const prop = templated.replace(/`/g, '')
+    return prop in context.variables ? context.variables[prop] : prop
+}
+
+const getTemplateResolver = context => {
+    const templatedExp = `${context.templateChar}(.+)${context.templateChar}`
+    const regex = new RegExp(templatedExp, 'gi')
+
+    return x => {
+        const s = JSON.stringify(x, null, 2)
+        const replaced = s.replace(regex,
+            templated => safeGetTemplateValue(context, templated)
+        )
+        return JSON.parse(replaced)
+    }
+}
+
 const Request =
 ({
     of: reader => {
         return {
             step: f => Request.of(reader.map(f)),
             stepWithContext: f => Request.of(reader.chain(f)),
-            execute: c =>
-                R.pipe(
+            execute: c => {
+                const resolveTemplates = getTemplateResolver(c)
+
+                return R.pipe(
                     reader.run,
+                    resolveTemplates,
                     http
                 )(c)
+            }
         }
     }
 })
+
+_.expose = env => {
+    var f
+    for (f in _) {
+        if (f !== 'expose' && _.hasOwnProperty(f)) {
+            env[f] = _[f]
+        }
+    }
+    return _
+}
 
 _.ScenarioContext = overrides =>
     R.mergeDeepLeft(defaultContext, overrides)
@@ -56,8 +88,11 @@ _.RequestFactory = overrides =>
     )(overrides)
 
 _.inspect = x => {
-    console.log(util.inspect(x, {colors: true, compact: false}))
-    return x
+    return withContext(context => {
+        const resolveTemplates = getTemplateResolver(context)
+        console.log(util.inspect(resolveTemplates(x), {colors: true, compact: false}))
+        return x
+    })
 }
 
 _.setHeader = (name, value) => (request) =>
@@ -65,7 +100,7 @@ _.setHeader = (name, value) => (request) =>
 
 _.setQueryParameter = (name, value) => (request) => {
     return withContext(context =>
-        R.assocPath(['qs', name], context.variableChar, request)
+        R.assocPath(['qs', name], value, request)
     )
 }
 
@@ -74,15 +109,5 @@ _.setMethod = method => request =>
 
 _.setUri = uri => request =>
     R.assocPath(['uri'], uri, request)
-
-_.expose = env => {
-    var f
-    for (f in _) {
-        if (f !== 'expose' && _.hasOwnProperty(f)) {
-            env[f] = _[f]
-        }
-    }
-    return _
-}
 
 module.exports = _
