@@ -1,5 +1,4 @@
 //TODO: implement response assertion example
-//TODO: variable replacer
 
 const R = require('ramda')
 const util = require('util')
