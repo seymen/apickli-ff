@@ -1,4 +1,4 @@
-//TODO: implement response assertion example
+//TODO: look at R.propOr instead of safeGetTemplateValue
 
 const R = require('ramda')
 const util = require('util')
@@ -86,27 +86,46 @@ _.RequestFactory = overrides =>
         Request.of
     )(overrides)
 
-_.inspect = x => {
+_.inspectTemplated = x => {
     return withContext(context => {
         const resolveTemplates = getTemplateResolver(context)
-        console.log(util.inspect(resolveTemplates(x), {colors: true, compact: false}))
-        return x
+        return _.inspect(resolveTemplates(x))
     })
+}
+
+_.inspect = x => {
+    console.log(util.inspect(x, {colors: true, compact: false}))
+    return x
 }
 
 _.setHeader = (name, value) => (request) =>
     R.assocPath(['headers', name], value, request)
 
-_.setQueryParameter = (name, value) => (request) => {
-    return withContext(context =>
+_.setQueryParameter = (name, value) => (request) =>
+    withContext(context =>
         R.assocPath(['qs', name], value, request)
     )
-}
 
 _.setMethod = method => request =>
     R.assocPath(['method'], method, request)
 
 _.setUri = uri => request =>
     R.assocPath(['uri'], uri, request)
+
+const assertOnRegEx = (actual, expected) => {
+    const success = R.test(
+        new RegExp(`/${expected}/`),
+        actual
+    )
+
+    if (!success) {
+        throw new Error(
+            `expected ${expected} but got ${actual}`
+        )
+    }
+}
+
+_.assertResponseCode = expected => response =>
+    assertOnRegEx(response.statusCode, expected)
 
 module.exports = _
