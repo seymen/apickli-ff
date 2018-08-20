@@ -110,10 +110,10 @@ _.setQueryParameter = (name, value) => (request) =>
     )
 
 _.setMethod = method => request =>
-    R.assocPath(['method'], method, request)
+    R.assoc(['method'], method, request)
 
 _.setUri = uri => request =>
-    R.assocPath(['uri'], uri, request)
+    R.assoc(['uri'], uri, request)
 
 _.assert = f => (...args) => response => {
     //TODO: foreach in args and do template resolution
