@@ -4,6 +4,7 @@ const R = require('ramda')
 const util = require('util')
 const Reader = require('fantasy-readers')
 const http = require('request-promise-native')
+const assert = require('chai').assert
 
 const withContext = f => Reader.ask.map(f)
 const _ = {}
@@ -56,11 +57,13 @@ const Request =
             execute: c => {
                 const resolveTemplates = getTemplateResolver(c)
 
-                return R.pipe(
+                const rp = R.pipe(
                     reader.run,
                     resolveTemplates,
                     http
                 )(c)
+
+                return rp.then(r => R.assoc('context', c, r))
             }
         }
     }
@@ -112,20 +115,29 @@ _.setMethod = method => request =>
 _.setUri = uri => request =>
     R.assocPath(['uri'], uri, request)
 
-const assertOnRegEx = (actual, expected) => {
-    const success = R.test(
-        new RegExp(`/${expected}/`),
-        actual
-    )
-
-    if (!success) {
-        throw new Error(
-            `expected ${expected} but got ${actual}`
-        )
+_.assert = f => (...args) => response => {
+    //TODO: foreach in args and do template resolution
+    try {
+        return f(...args)(response)
+    } catch (err) {
+        err.context = response.context
+        throw err
     }
 }
 
-_.assertResponseCode = expected => response =>
-    assertOnRegEx(response.statusCode, expected)
+const isResponseCodeEq = expected => response => {
+    const actual = R.prop('statusCode', response)
+    assert.equal(actual, expected, 'Status code =>')
+    return response
+}
+
+const matchResponseHeaderValue = (name, expected) => response => {
+    const actual = R.path(['headers', name.toLowerCase()], response)
+    assert.equal(actual, expected, 'Response header =>')
+    return response
+}
+
+_.assertResponseCode = _.assert(isResponseCodeEq)
+_.assertResponseHeaderValue = _.assert(matchResponseHeaderValue)
 
 module.exports = _

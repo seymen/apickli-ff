@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.1.2",
     "fantasy-readers": "0.0.1",
     "ramda": "^0.25.0",
     "request": "^2.88.0",
