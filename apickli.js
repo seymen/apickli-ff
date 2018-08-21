@@ -53,11 +53,11 @@ const Request =
         step: f => Request.of(reader.map(f)),
         stepWithContext: f => Request.of(reader.chain(f)),
         execute: c => {
-          const resolveTemplates = getTemplateResolver(c)
+          const resolveTemplate = getTemplateResolver(c)
 
           const rp = R.pipe(
             reader.run,
-            resolveTemplates,
+            resolveTemplate,
             http
           )(c)
 
@@ -114,9 +114,11 @@ _.setUri = uri => request =>
   R.assoc(['uri'], uri, request)
 
 _.assert = f => (...args) => response => {
-  //TODO: foreach in args and do template resolution
+  const resolveTemplate = getTemplateResolver(response.context)
+  const resolvedArgs = args.map(resolveTemplate)
+
   try {
-    return f(...args)(response)
+    return f(...resolvedArgs)(response)
   } catch (err) {
     err.context = response.context
     throw err

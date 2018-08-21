@@ -2,7 +2,8 @@ require('./apickli').expose(global)
 
 const ctx = {
   variables: {
-    a: 1
+    a: 1,
+    connection: 'close1'
   }
 }
 
@@ -25,6 +26,6 @@ const request = RequestFactory(req)
 console.log('before')
 request.execute(scenarioContext)
   .then(assertResponseCode(400))
-  .then(assertResponseHeaderValue('Connection', 'blah'))
+  .then(assertResponseHeaderValue('Connection', '`connection`'))
   .catch(err => console.error(err))
 console.log('after')
