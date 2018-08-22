@@ -1,0 +1,17 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+"no-console": "off",
+    "require-jsdoc": "off",
+    "max-len": "off",
+    "valid-jsdoc": "off"
+  }
+}
