@@ -1,4 +1,4 @@
-require('./lib/apickli').expose(global)
+import * as apickli from './lib/apickli.js'
 
 const ctx = {
   variables: {
@@ -14,19 +14,18 @@ const req = {
   }
 }
 
-const scenarioContext = ScenarioContext(ctx)
-
-const request = RequestFactory(req)
-  .step(setHeader('map', '`a`'))
-  .stepWithContext(setQueryParameter('a', '`a`'))
-  .step(setMethod('GET'))
-  .step(setUri('/status/400'))
-  .stepWithContext(inspectTemplated)
+const request = apickli
+  .RequestFactory(req)
+  .map(apickli.setHeader('map', '`a`'))
+  .map(apickli.setQueryParameter('a', '`a`'))
+  .map(apickli.setMethod('GET'))
+  .map(apickli.setUri('/status/400'))
+  .chain(apickli.inspectTemplated)
 
 console.log('before')
 request
-  .execute(scenarioContext)
-  .then(assertResponseCode(400))
-  .then(assertResponseHeaderValue('Connection', '`connection`'))
+  .execute(ctx)
+  .then(apickli.assertResponseCode(400))
+  .then(apickli.assertResponseHeaderValue('Connection', '`connection`'))
   .catch(err => console.error(err))
 console.log('after')
