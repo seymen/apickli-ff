@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/cucumber-js test/bdd/features"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +14,8 @@
     "fantasy-readers": "0.0.1",
     "ramda": "^0.25.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "cucumber": "^4.2.1",
