@@ -4,18 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/cucumber-js test/bdd/features"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "JSONPath": "^0.11.2",
     "chai": "^4.1.2",
     "fantasy-readers": "0.0.1",
     "ramda": "^0.25.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
+    "cucumber": "^4.2.1",
     "eslint": "^5.4.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
