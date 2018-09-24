@@ -24,6 +24,11 @@ Feature: Request body feature
     And response body path $.form.password should be bar
 
   Scenario: send json
-    And I set body to {"foo":"bar"}
+    Given I set body to {"foo":"bar"}
+    When I POST to /post
+    Then response body path $.json.foo should be bar
+
+  Scenario: pipe file to body
+    Given I pipe contents of file foo.json to body
     When I POST to /post
     Then response body path $.json.foo should be bar
