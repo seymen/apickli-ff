@@ -8,7 +8,8 @@ Before(function() {
 
   this.context = {
     variables: {
-      userAgent: 'apickli'
+      userAgent: 'apickli',
+      var1: 'bar'
     }
   }
 })
