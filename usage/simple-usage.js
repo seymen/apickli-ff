@@ -1,9 +1,9 @@
-import * as apickli from './lib/apickli.js'
+const apickli = require('../lib/apickli.js')
 
 const ctx = {
   variables: {
     a: 1,
-    connection: 'close1'
+    connection: 'close'
   }
 }
 
