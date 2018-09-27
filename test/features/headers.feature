@@ -27,3 +27,12 @@ Feature: Request header feature
     Given I set User-Agent header to `not-defined`
     When I GET /get
     Then response body path $.headers.User-Agent should be not-defined
+
+  Scenario: set headers from table
+    Given I set headers to
+      | name | value |
+      | Foo  | bar   |
+      | Baz  | boo   |
+    When I GET /get
+    Then response body path $.headers.Foo should be bar
+    And response body path $.headers.Baz should be boo
