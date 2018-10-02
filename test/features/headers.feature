@@ -36,3 +36,17 @@ Feature: Request header feature
     When I GET /get
     Then response body path $.headers.Foo should be bar
     And response body path $.headers.Baz should be boo
+
+  Scenario: set duplicate headers
+    Given I set Foo header to bar
+    And I set Foo header to baz
+    When I GET /get
+    Then response body path $.headers.Foo should be baz
+  
+  Scenario: set duplicate headers from table
+    Given I set headers to
+      | name | value |
+      | Foo  | bar   |
+      | Foo  | baz   |
+    When I GET /get
+    Then response body path $.headers.Foo should be baz
