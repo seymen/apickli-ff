@@ -4,7 +4,3 @@ Feature: Making DELETE requests
     When I DELETE /anything
     Then response code should be 200
     Then response body path $.method should be DELETE
-
-  Scenario: should send a DELETE request to target
-    When I DELETE /post
-    Then response code should be 405
