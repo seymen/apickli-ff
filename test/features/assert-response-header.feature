@@ -5,6 +5,7 @@ Feature: response header assertions
     Then response header Content-Type should be application/json
     And response header Content-Type should be [a-z]{11}/[a-z]{4}
     And response header Content-Type should be (.+)
+    And response header Content-Type should not be text/html
 
   Scenario: should assert non-existing header
     When I GET /anything

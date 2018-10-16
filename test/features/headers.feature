@@ -42,7 +42,7 @@ Feature: Request header feature
     And I set Foo header to baz
     When I GET /get
     Then response body path $.headers.Foo should be baz
-  
+
   Scenario: set duplicate headers from table
     Given I set headers to
       | name | value |
