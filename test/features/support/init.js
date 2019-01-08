@@ -9,8 +9,9 @@ Before(function() {
   this.context = {
     variables: {
       userAgent: 'apickli',
-      var1: 'bar'
-    }
+      foo: 'bar'
+    },
+    fixturesDirectory: './test/features/fixtures'
   }
 })
 

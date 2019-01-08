@@ -9,12 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "JSONPath": "^0.11.2",
-    "chai": "^4.1.2",
     "fantasy-readers": "0.0.1",
     "ramda": "^0.25.0",
+    "chai": "^4.1.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
+    "JSONPath": "^0.11.2",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {

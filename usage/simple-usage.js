@@ -16,11 +16,11 @@ const req = {
 
 const request = apickli
   .request(req)
-  .map(apickli.setHeader('map', '`a`'))
-  .map(apickli.setQueryParameter('a', '`a`'))
-  .map(apickli.setMethod('GET'))
-  .map(apickli.setUri('/status/400?q=`a`'))
-  .chain(apickli.inspectTemplated)
+  .chain(apickli.setHeader('map', '`a`'))
+  .chain(apickli.setQueryParameter('a', '`a`'))
+  .chain(apickli.setMethod('GET'))
+  .chain(apickli.setUri('/status/400?q=`a`'))
+  .chain(apickli.inspect)
 
 console.log('before')
 request

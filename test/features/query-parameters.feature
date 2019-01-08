@@ -6,7 +6,7 @@ Feature: setting query parameters
     Then response body path $.args.foo should be bar
 
   Scenario: set query parameter to a variable
-    Given I set foo query parameter to `var1`
+    Given I set foo query parameter to `foo`
     When I GET /get
     Then response body path $.args.foo should be bar
 
