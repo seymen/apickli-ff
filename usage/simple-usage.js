@@ -15,11 +15,11 @@ const req = {
 }
 
 const request = apickli
-  .RequestFactory(req)
+  .request(req)
   .map(apickli.setHeader('map', '`a`'))
   .map(apickli.setQueryParameter('a', '`a`'))
   .map(apickli.setMethod('GET'))
-  .map(apickli.setUri('/status/400'))
+  .map(apickli.setUri('/status/400?q=`a`'))
   .chain(apickli.inspectTemplated)
 
 console.log('before')

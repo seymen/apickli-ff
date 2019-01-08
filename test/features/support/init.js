@@ -2,7 +2,7 @@ const apickli = require('../../../lib/apickli.js')
 const { Before, setDefaultTimeout } = require('cucumber')
 
 Before(function() {
-  this.request = apickli.RequestFactory({
+  this.request = apickli.request({
     baseUrl: 'https://httpbin.org'
   })
 
