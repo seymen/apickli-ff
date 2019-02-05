@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/cucumber-js test/features"
+    "test": "node_modules/.bin/cucumber-js test/features",
+    "start": "nodemon usage/simple-usage.js -q -x 'clear && node'"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "eslint": "^5.4.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
-    "prettier": "1.14.2"
+    "prettier": "1.14.2",
+    "nodemon": "latest"
   }
 }
