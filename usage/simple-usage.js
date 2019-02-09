@@ -7,6 +7,8 @@ const ctx = {
   }
 }
 
+//TODO: CAN ALL OF THESE BE READER?
+
 const req = {
   baseUrl: 'https://httpbin.org',
   headers: {
@@ -17,15 +19,19 @@ const req = {
 const request = apickli
   .request(req)
   .chain(apickli.setHeader('map', '`a`'))
-  .chain(apickli.setQueryParameter('a', '`a`'))
   .chain(apickli.setMethod('GET'))
-  .chain(apickli.setUri('/status/400?q=`a`'))
-  .chain(apickli.inspect)
+  .chain(apickli.setUri('/get?q=`a`'))
+  // .chain(apickli.inspect)
 
-console.log('before')
+console.log('standalone usage:')
+
 request
   .execute(ctx)
-  .then(apickli.assertResponseCode(400))
-  .then(apickli.assertResponseHeaderValue('Connection', '`connection`'))
-  .catch(err => console.error(err))
+  .map(apickli.assertResponseCode(200))
+  .map(apickli.assertResponseCode(200))
+  // .map(apickli.assertResponseBodyPath('$.headers.Connection', 'close'))
+  // .map(resp => resp.body)
+  // .map(JSON.parse)
+  .fork(console.error, console.log)
+
 console.log('after')
