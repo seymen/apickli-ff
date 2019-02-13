@@ -17,7 +17,7 @@ const req = {
 apickli.request(req, ctx)
 .map(apickli.setHeader('Header1', 'a'))
 .map(apickli.setUri('/get'))
-.chain(apickli.execute)
+.map(apickli.execute)
 .fork(
   console.error,
   r => console.log('forked:', r)
