@@ -24,10 +24,10 @@
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
-    "cucumber": "^4.2.1",
+    "cucumber": "^5",
     "eslint": "^5.13.0",
     "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-prettier": "^2.7.0",
-    "nodemon": "latest"
+    "nodemon": "^1.18.10"
   }
 }
