@@ -5,27 +5,30 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/cucumber-js test/features",
+    "feature": "nodemon node_modules/.bin/cucumber-js test/features/get.feature -q -x 'clear && node'",
     "start": "nodemon usage/simple-usage.js -q -x 'clear && node'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "JSONPath": "^0",
+    "chai": "^4",
+    "crocks": "^0",
+    "deepmerge": "^3",
     "fantasy-readers": "0.0.1",
+    "fluture": "^10.3.1",
+    "is-my-json-valid": "^2",
     "ramda": "^0.25.0",
-    "crocks": "~0.11",
-    "chai": "^4.1.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "JSONPath": "^0.11.2",
     "xmldom": "^0.1.27",
-    "is-my-json-valid": "^2"
+    "xpath.js": "^1.1.0"
   },
   "devDependencies": {
-    "cucumber": "^4.2.1",
-    "eslint": "^5.4.0",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.2",
-    "prettier": "1.14.2",
-    "nodemon": "latest"
+    "cucumber": "^5",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-prettier": "^2.7.0",
+    "nodemon": "^1.18.10"
   }
 }

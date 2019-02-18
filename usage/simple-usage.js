@@ -2,9 +2,10 @@ const apickli = require('../lib/apickli.js')
 
 const ctx = {
   variables: {
-    a: 1,
-    connection: 'close'
-  }
+    uri: '/get',
+    successCode: '200'
+  },
+  templateChar: '`'
 }
 
 const req = {
@@ -14,18 +15,13 @@ const req = {
   }
 }
 
-const request = apickli
-  .request(req)
-  .chain(apickli.setHeader('map', '`a`'))
-  .chain(apickli.setQueryParameter('a', '`a`'))
-  .chain(apickli.setMethod('GET'))
-  .chain(apickli.setUri('/status/400?q=`a`'))
-  .chain(apickli.inspect)
-
-console.log('before')
-request
-  .execute(ctx)
-  .then(apickli.assertResponseCode(400))
-  .then(apickli.assertResponseHeaderValue('Connection', '`connection`'))
-  .catch(err => console.error(err))
-console.log('after')
+apickli.request(ctx, req)
+  .map(apickli.setMethod('GET'))
+  .map(apickli.setUri('`uri`'))
+  .chain(apickli.execute)
+  .chain(apickli.assertResponseCode('`successCode`'))
+  .chain(apickli.assertResponseCode(200))
+  .fork(
+    console.log,
+    console.log
+  )
