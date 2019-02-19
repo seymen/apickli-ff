@@ -15,7 +15,7 @@ Before(function() {
     baseUrl: 'https://httpbin.org'
   }
 
-  this.requestTask = apickli.request(ctx, req)
+  this.requestPair = apickli.request(ctx, req)
 })
 
 setDefaultTimeout(60 * 1000)
