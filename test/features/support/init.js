@@ -1,4 +1,4 @@
-const apickli = require('../../../lib/apickli.js')
+const apickli = require('../../../lib/index.js')
 const { Before, setDefaultTimeout } = require('cucumber')
 
 Before(function() {
@@ -15,7 +15,7 @@ Before(function() {
     baseUrl: 'https://httpbin.org'
   }
 
-  this.requestPair = apickli.request(ctx, req)
+  this.requestPair = apickli.request(req, ctx)
 })
 
 setDefaultTimeout(60 * 1000)

@@ -1,4 +1,5 @@
-const apickli = require('../lib/apickli.js')
+const apickli = require('../lib/index')
+const log = require('../lib/log')
 const { Async: Task } = require('crocks')
 
 const ctx = {
@@ -16,13 +17,10 @@ const req = {
   }
 }
 
-Task.of(apickli.request(ctx, req))
+Task.of(apickli.request(req, ctx))
 .map(apickli.setMethod('GET'))
 .map(apickli.setUri('`uri`'))
 .chain(apickli.execute)
 .chain(apickli.assertResponseCode('`successCode`'))
 .chain(apickli.assertResponseCode(200))
-.fork(
-  console.log,
-  console.log
-)
+.fork(log, log)
