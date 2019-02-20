@@ -15,15 +15,15 @@
     "chai": "^4",
     "crocks": "^0",
     "deepmerge": "^3",
-    "eyes": "^0.1.8",
+    "eyes": "^0",
     "is-my-json-valid": "^2",
-    "request": "^2.88.0",
-    "xmldom": "^0.1.27",
-    "xpath.js": "^1.1.0"
+    "request": "^2",
+    "xmldom": "^0",
+    "xpath.js": "^1"
   },
   "devDependencies": {
     "cucumber": "^5",
-    "eslint": "^5.13.0",
-    "nodemon": "^1.18.10"
+    "eslint": "^5",
+    "nodemon": "^1"
   }
 }
