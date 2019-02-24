@@ -7,8 +7,7 @@ Before(function() {
       userAgent: 'apickli',
       foo: 'bar',
       successCode: 200
-    },
-    fixturesDirectory: './test/features/fixtures'
+    }
   }
 
   const req = {

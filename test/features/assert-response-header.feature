@@ -6,7 +6,3 @@ Feature: response header assertions
     And response header Content-Type should be [a-z]{11}/[a-z]{4}
     And response header Content-Type should be (.+)
     And response header Content-Type should not be text/html
-
-  Scenario: should assert non-existing header
-    When I GET /anything
-    Then response header blah should be undefined
