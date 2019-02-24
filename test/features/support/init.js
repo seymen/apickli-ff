@@ -20,6 +20,6 @@ Before(function() {
 setDefaultTimeout(60 * 1000)
 
 // https://github.com/cucumber/cucumber-js/issues/157#issuecomment-36896256
-Error.prepareStackTrace = function (error, stack) {
+Error.prepareStackTrace = function () {
     return ''
 };
