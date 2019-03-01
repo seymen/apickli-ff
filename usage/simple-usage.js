@@ -1,4 +1,4 @@
-const apickli = require('../lib/index')
+const apickli = require('../lib/apickli')
 const log = require('../lib/log')
 const { Async: Task } = require('crocks')
 
