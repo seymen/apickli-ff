@@ -12,3 +12,8 @@ Feature: Response body path matches
     When I POST to /post
     Then response body path $.json[0].a should be b
     And response body path $.json.length should be 2
+  
+  Scenario: should assert json response body path type
+    Given I pipe contents of file array.json to body
+    When I POST to /post
+    Then response body path $.json should be of type array
