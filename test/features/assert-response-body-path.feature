@@ -10,5 +10,5 @@ Feature: Response body path matches
   Scenario: should assert json arrays
     Given I pipe contents of file array.json to body
     When I POST to /post
-    And response body path $.json[0].a should be b
+    Then response body path $.json[0].a should be b
     And response body path $.json.length should be 2
