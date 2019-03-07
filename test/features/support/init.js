@@ -1,4 +1,4 @@
-const apickli = require('../../../lib/index.js')
+const apickli = require('../../../lib/apickli.js')
 const { Before, setDefaultTimeout } = require('cucumber')
 
 Before(function() {
