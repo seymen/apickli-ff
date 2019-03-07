@@ -50,3 +50,7 @@ Feature: Request header feature
       | Foo  | baz   |
     When I GET /get
     Then response body path $.headers.Foo should be baz
+
+  Scenario: response header not exists
+    When I GET /get
+    Then response header blah should not exist
